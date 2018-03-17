@@ -1,9 +1,5 @@
 module CsvStatParser
   class Collection < Array
-    def initialize
-      @records = self
-    end
-
     def find_records(attributes, values)
       return matching_records(attributes, values) unless attributes.is_a?(Array) ||
                                                          values.is_a?(Array)

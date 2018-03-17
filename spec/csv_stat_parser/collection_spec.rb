@@ -7,7 +7,8 @@ describe CsvStatParser::Collection do
 
   describe '#find_records' do
     it 'returns matching records' do
-      collection.find_records('male', '1')
+      records = collection.find_records('male', '1')
+      expect(records.map(&:male).uniq).to .eq(['1'])
     end
 
     context 'when multiple values' do
