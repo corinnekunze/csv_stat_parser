@@ -1,3 +1,5 @@
+require 'smarter_csv'
+
 module CsvStatParser
   class Parser
     def initialize(headers = nil)
