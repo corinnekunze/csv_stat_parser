@@ -4,34 +4,27 @@ module CsvStatParser
   class Record
     def initialize(data, id)
       # Adds record_id to beginning of data set
-      @data = { record_id: id.to_s }.merge(data)
+      @data = id_hash(id).merge(data)
       assign_attributes
     end
 
     def set(attribute, value)
-      send("#{attribute}=", value)
+      instance_variable_set("@#{attribute}", value)
     end
 
     private
 
+    # Set attr_acessor sets getter/setter for attribute name
+    # Then set new instance variable with value
     def assign_attributes
       @data.each do |attribute, value|
-        define_setter(attribute)
-        define_getter(attribute)
+        self.class.send(:attr_accessor, attribute)
         set(attribute, value)
       end
     end
 
-    def define_setter(attribute)
-      create_method("#{attribute}=".to_sym) { |set_value| instance_variable_set("@#{attribute}", set_value) }
-    end
-
-    def define_getter(attribute)
-      create_method(attribute.to_sym) { instance_variable_get("@#{attribute}") }
-    end
-
-    def create_method(attribute, &block)
-      self.class.send(:define_method, attribute, &block)
+    def id_hash(id)
+      { record_id: id ? id.to_s : id }
     end
   end
 end
