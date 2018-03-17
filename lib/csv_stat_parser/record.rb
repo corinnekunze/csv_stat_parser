@@ -1,5 +1,3 @@
-require 'smarter_csv'
-
 module CsvStatParser
   class Record
     def initialize(data, id)

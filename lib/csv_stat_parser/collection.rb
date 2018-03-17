@@ -1,5 +1,3 @@
-require 'smarter_csv'
-
 module CsvStatParser
   class Collection < Array
     def find_record(key, value)
