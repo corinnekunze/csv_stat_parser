@@ -24,7 +24,81 @@ Or install it yourself as:
 
 Run `bin/console` for an interactive prompt.
 
-TBD
+
+### Initialize the Parser
+
+You must first initialize the parser, either with custom headers or you may leave the default ones from your CSV.
+
+To parse your CSV with default headers:
+
+```
+parser = CsvStatParser::Parser.new
+```
+
+It's common for CSV headers to be unwieldy to write out to query records so I suggest you map to new ones.
+
+They will be determined by the order in which your headers appear, so say your CSV looks like so:
+
+```
+First Name,Last Name,Number of Dogs,Number of Cats,Nubmer of Birds, Number of Fish
+Dan,McAllister,2,0,,
+Lucy,Laweless,,5,0,
+,,,,,
+Miles,O'Brian,0,0,0,21
+Nancy,Homes,2,0,1,
+Hernán,Curaçon,3,0,0,
+,,,,,
+
+```
+
+You can pass in your headers as a array to overwite the existing ones, so for above example CSV:
+```
+parser = CsvStatParser:Parser.new([first_name, last_name, dogs, cats, birds, fish])
+
+```
+
+### Parse your data
+
+Next, parse the data with a file name like so:
+
+```
+parsed_data = parser.parse('/path/to/file.csv')
+```
+
+This will return a hash of values for you to do whatever youd like with it.
+
+### Query your parsed data
+
+csv_stat_parser allows you to make comparisons on this data with the `find_records` method.
+
+For instance, this finds all records where the 'male' column is selected as '1'
+```
+parsed_data.find_records('gender', '1')
+```
+
+You may also query by multiple header attributes OR by multiple values by passing in an array. For example:
+
+Records where either male OR female is selected
+
+```
+female_or_male = parsed_data.find_records(['male', 'female'], '1')
+```
+
+Records where big cats are selected
+```
+big_cats = parsed_data.find_records('animals', ['panther', 'tiger', 'lion'])
+```
+
+*Note* The `find_records` will return a CsvStatParser Collection class so you can further scope or make comparisons from there.
+
+Examples:
+```
+women = parsed_data.find_records('female', '1')
+female_managers = women.find_records('manager', '1')
+
+# percentage of women that are managers
+female_managers.size / women.size
+```
 
 ## Development
 
