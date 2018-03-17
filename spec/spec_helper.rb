@@ -1,8 +1,11 @@
 require 'bundler/setup'
 require 'csv_stat_parser'
+require 'pry'
 require 'simplecov'
 
 SimpleCov.start
+
+Dir[File.dirname(__FILE__) + '/shared/examples/*.rb'].each {|file| require file }
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
