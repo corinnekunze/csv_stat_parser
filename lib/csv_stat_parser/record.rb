@@ -4,7 +4,7 @@ module CsvStatParser
   class Record
     def initialize(data, id)
       # Adds record_id to beginning of data set
-      @data = {record_id: id.to_s}.merge(data)
+      @data = { record_id: id.to_s }.merge(data)
       assign_attributes
     end
 
@@ -23,15 +23,15 @@ module CsvStatParser
     end
 
     def define_setter(attribute)
-      create_method( "#{attribute}=".to_sym) { |set_value| instance_variable_set("@#{attribute}", set_value) }
+      create_method("#{attribute}=".to_sym) { |set_value| instance_variable_set("@#{attribute}", set_value) }
     end
 
     def define_getter(attribute)
       create_method(attribute.to_sym) { instance_variable_get("@#{attribute}") }
     end
 
-    def create_method(header, &block)
-      self.class.send(:define_method, header, &block)
+    def create_method(attribute, &block)
+      self.class.send(:define_method, attribute, &block)
     end
   end
 end
